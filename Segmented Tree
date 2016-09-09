@@ -1,0 +1,76 @@
+#include<bits/stdc++.h>
+#define ll     long long int
+#define inf 1000000000
+#define MAXN 50000
+
+using namespace std;
+
+void init(ll node,ll v[],ll tree[],ll b,ll e)
+{          if(b==e)
+              {
+                        tree[node]=v[b];
+                        return;
+              }
+          ll mid=(b+e)/2;
+          ll left=2*node;
+          ll right=2*node +1;
+          init(left,v,tree,b,mid);
+          init(right,v,tree,mid+1,e);
+          tree[node]= tree[left]+tree[right];
+
+}
+
+ll query(ll node, ll tree[], ll b, ll e, ll i, ll j)
+{
+          if(i>e || j<b)
+                    return 0;
+          if(b>=i && e<=j)
+                    return tree[node];
+           ll mid=(b+e)/2;
+          ll left=2*node;
+          ll right=2*node +1;
+          ll p1=query(left,tree,b,mid,i,j);
+          ll p2=query(right,tree,mid+1,e,i,j);
+          return p1+p2;
+}
+
+void update(ll node,ll v[],ll tree[],ll b,ll e,ll i, ll newv)
+{
+          if(i<b || i>e)
+                    return;
+
+          if(i>=b && i<=e)
+              {
+                        tree[node]=newv;
+                        return;
+              }
+          ll mid=(b+e)/2;
+          ll left=2*node;
+          ll right=2*node +1;
+          update(left,v,tree,b,mid,i,newv);
+          update(right,v,tree,mid+1,e,i,newv);
+          tree[node]= tree[left]+tree[right];
+
+}
+
+int main()
+{
+
+
+    ll n,a,b,i,j;
+    cin>>n;
+    ll m=n;
+    ll tree[n*3],v[n];
+    i=1;
+    while(n--)
+    {
+              cin>>v[i++];
+
+    }
+    init(1,v,tree,1,m);
+    cin>>i>>j;
+     cout<<query(1,tree,1,m,i,j)<<endl;
+     cin>>i>>b;
+    update(1,v,tree,1,m,i,b);
+      cout<<query(1,tree,1,m,i,j)<<endl;
+}
