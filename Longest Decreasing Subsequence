@@ -1,0 +1,56 @@
+#include<bits/stdc++.h>
+
+using namespace std;
+vector<int>val;
+int n,dp[10005];
+int longest(int x)
+{
+          if(dp[x]!=-1) return dp[x];
+          int maxi=0;
+          for(int i=x+1; i<=n; i++)
+          {
+                    if(val[i]<val[x])
+                    {
+                              if(longest(i)>maxi)
+                              {
+                                        maxi=longest(i);
+
+                              }
+                    }
+          }
+
+          dp[x]=maxi+1;
+          return dp[x];
+}
+
+int main()
+{
+           int t;
+           cin>>t;
+           int k=1;
+           while(t--)
+	{
+                     val.clear();
+	          memset(dp,-1,sizeof dp);
+                  cin>>n;
+                  val.push_back(INT_MAX);
+                  int a;
+                  for(int h=0; h<n; h++)
+                  {
+                       cin>>a;
+                       val.push_back(a);
+                  }
+	int LIS=0;
+	for(int i=1;i<=n;i++)
+	{
+
+		if(longest(i)>LIS)
+		{
+			LIS=longest(i);
+
+		}
+	}
+	cout<<LIS<<"\n";}
+
+	return 0;
+}
